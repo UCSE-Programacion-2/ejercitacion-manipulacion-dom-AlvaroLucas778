@@ -1,0 +1,95 @@
+name: Pruebas automáticas (Classroom)
+on:
+  push:
+  workflow_dispatch:
+  repository_dispatch:
+
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Vincular CSS y JS al HTML
+        id: test-link-css-js
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "Vinculación de css/style.css y js/script.js en index.html"
+          command: "bash scripts/classroom-check.sh link-css-js"
+          expected-output: "CORRECTO"
+          comparison-method: exact
+          timeout: 10
+          max-score: 15
+
+      - name: Agregar clase card a la tarjeta
+        id: test-set-class-card
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "Uso de setAttribute para agregar la clase card al div tarjeta"
+          command: "bash scripts/classroom-check.sh set-class-card"
+          expected-output: "CORRECTO"
+          comparison-method: exact
+          timeout: 10
+          max-score: 15
+
+      - name: Asignar imagen de YouTube
+        id: test-set-img-src
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "Asignación del atributo src a la imagen del logo"
+          command: "bash scripts/classroom-check.sh set-img-src"
+          expected-output: "CORRECTO"
+          comparison-method: exact
+          timeout: 10
+          max-score: 15
+
+      - name: Quitar formato feo del título
+        id: test-remove-titulo-feo
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "Remoción de la clase titulo-feo del h1"
+          command: "bash scripts/classroom-check.sh remove-titulo-feo"
+          expected-output: "CORRECTO"
+          comparison-method: exact
+          timeout: 10
+          max-score: 15
+
+      - name: Verificar atributo href del link YouTube
+        id: test-has-attribute-href
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "Uso de hasAttribute para verificar href en el link de YouTube"
+          command: "bash scripts/classroom-check.sh has-attribute-href"
+          expected-output: "CORRECTO"
+          comparison-method: exact
+          timeout: 10
+          max-score: 15
+
+      - name: Obtener href del link Wikipedia
+        id: test-get-attribute-href
+        uses: classroom-resources/autograding-io-grader@v1
+        with:
+          test-name: "Uso de getAttribute para obtener el href del link de Wikipedia"
+          command: "bash scripts/classroom-check.sh get-attribute-href"
+          expected-output: "CORRECTO"
+          comparison-method: exact
+          timeout: 10
+          max-score: 15
+
+      - name: Informe de resultados para Classroom
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST-LINK-CSS-JS_RESULTS: "${{ steps.test-link-css-js.outputs.result }}"
+          TEST-SET-CLASS-CARD_RESULTS: "${{ steps.test-set-class-card.outputs.result }}"
+          TEST-SET-IMG-SRC_RESULTS: "${{ steps.test-set-img-src.outputs.result }}"
+          TEST-REMOVE-TITULO-FEO_RESULTS: "${{ steps.test-remove-titulo-feo.outputs.result }}"
+          TEST-HAS-ATTRIBUTE-HREF_RESULTS: "${{ steps.test-has-attribute-href.outputs.result }}"
+          TEST-GET-ATTRIBUTE-HREF_RESULTS: "${{ steps.test-get-attribute-href.outputs.result }}"
+        with:
+          runners: test-link-css-js,test-set-class-card,test-set-img-src,test-remove-titulo-feo,test-has-attribute-href,test-get-attribute-href
