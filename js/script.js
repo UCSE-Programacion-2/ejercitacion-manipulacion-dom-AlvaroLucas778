@@ -20,3 +20,8 @@ const tieneHrefYoutube = linkYoutube.hasAttribute('href');
 console.log(tieneHrefYoutube);
 
 //5- Obtener el href del link a wikipedia y mostrarlo por consola
+const linkWikipedia = document.getElementById('link_wikipedia');
+
+const hrefWikipedia = linkWikipedia.getAttribute('href');
+
+console.log(hrefWikipedia);
