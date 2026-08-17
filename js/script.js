@@ -8,6 +8,9 @@ const logo = document.getElementById('logo');
 logo.setAttribute('src', 'https://www.youtube.com/img/desktop/yt_1200.png');
 
 //3- Quitarle al titulo la clase que le está dando un formato feo
+const titulo = document.querySelector('h1');
+
+titulo.classList.remove('titulo-feo');
 
 //4- Chequear si el link a youtube posee o no el atributo href
 
